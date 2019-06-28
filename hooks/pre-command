@@ -1,0 +1,19 @@
+#!/bin/bash
+set -ueo pipefail
+
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+. "$DIR/../lib/shared.bash"
+
+image_to="$(plugin_read_config CACHE_TO)"
+
+for image_from in $(plugin_read_list CACHE_FROM); do
+  echo "Attempting to pull $image_from..."
+  if docker pull "$image_from"; then
+    echo "Successfully pulled $image_from."
+    docker tag "$image_from" "$image_to"
+    echo "Tagged $image_to."
+    docker push "$image_to"
+    echo "Pushed $image_to."
+    exit
+  fi
+done

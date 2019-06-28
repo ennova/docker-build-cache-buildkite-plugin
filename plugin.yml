@@ -1,0 +1,15 @@
+name: docker build cache
+description: Sets a consistent cache image tag by trying multiple sources in sequence
+author: https://github.com/ennova
+requirements:
+  - docker
+configuration:
+  properties:
+    cache-from:
+      type: array
+      minimum: 1
+    cache-to:
+      type: string
+  required:
+    - cache-from
+    - cache-to
